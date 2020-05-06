@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en"
+	  xmlns:th="http://www.thymeleaf.org"
+	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	  xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+	  layout:decorator="layouts/_movies.html">
+<div layout:fragment="content">
+
+	<!-- nav -->
+	<div class="movies_nav">
+		<div class="container">
+			<nav class="navbar navbar-default">
+				<div class="navbar-header navbar-left">
+					<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+						<span class="sr-only">Toggle navigation</span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+					</button>
+				</div>
+				<!-- Collect the nav links, forms, and other content for toggling -->
+				<div class="collapse navbar-collapse navbar-right" id="bs-example-navbar-collapse-1">
+					<nav>
+						<ul class="nav navbar-nav">
+							<li><a th:href="@{'/'}">Home</a></li>
+							<li class="dropdown">
+								<a href="#" class="dropdown-toggle" data-toggle="dropdown">Genres <b class="caret"></b></a>
+								<ul class="dropdown-menu multi-column columns-3">
+									<li>
+										<div class="col-sm-4">
+											<ul class="multi-column-dropdown">
+												<li th:each="genre : ${genres}"><a href="#" th:text="${genre.name}"></a></li>
+											</ul>
+										</div>
+										<div class="clearfix"></div>
+									</li>
+								</ul>
+							</li>
+							<li sec:authorize="hasAnyRole('ROLE_ADMIN')"><a th:href="@{'/addPost'}" >Add Movie</a></li>
+							<li sec:authorize="hasAnyRole('ROLE_ADMIN')"><a th:href="@{'/adminPage'}">Admin Page</a></li>
+							<li sec:authorize="hasAnyRole('ROLE_MODERATOR')"><a th:href="@{'/moderatorPage'}">Moderator Page</a></li>
+						</ul>
+					</nav>
+				</div>
+			</nav>
+		</div>
+	</div>
+	<!-- //nav -->
+
+	<div class="single-page-agile-main">
+		<div class="container">
+			<div class="single-page-agile-info">
+				<div class="show-top-grids-w3lagile">
+					<div class="col-sm-8 single-left">
+						<div class="song mb-4">
+							<div class="song-info">
+								<h3 th:text="${post.title}"></h3>
+							</div>
+							<div class="video-grid-single-page-agileits">
+								<img th:src="${post.posterURL}" alt="" class="img-responsive" style="max-height: 315px"/>
+							</div>
+							<p>Genres: <span th:text="${post.listGenres()}"></span></p><br>
+							<div th:utext="${post.content}"></div>
+							<p th:text="${post.postDate.year}"></p>
+
+						</div>
+						<div class="my-3" sec:authorize="isAuthenticated()">
+							<div th:if="${user.getId().equals(post.getAuthor().getId())} or ${#authorization.expression('hasRole(''ROLE_MODERATOR'')')} or ${#authorization.expression('hasRole(''ROLE_ADMIN'')')}" class="btn-group">
+								<a th:href="@{/editPost/{post_id}(post_id = ${post.getId()})}"><button class="btn btn-primary mr-1" th:text="#{label.edit}"></button></a>
+								<form th:action="@{/deletePost}" method="post">
+									<input type="hidden" name="id" th:value="${post.getId()}">
+									<input type="submit" class="btn btn-danger " th:value="#{label.delete}">
+								</form>
+							</div>
+						</div>
+						<div class="clearfix"></div>
+
+						<div class="all-comments">
+							<div class="all-comments-info">
+								<p>Comments</p>
+								<div class="agile-info-wthree-box" sec:authorize="isAuthenticated()">
+									<form th:action="@{'/addComment'}" method="post">
+										<input type="hidden" name="add_comment_post_id" th:value="${post.id}">
+										<textarea id="addComment" name="comment" placeholder="Message" required=""></textarea>
+										<script>
+											CKEDITOR.replace('addComment');
+										</script>
+										<input type="submit" value="SEND">
+										<div class="clearfix">
+										</div>
+									</form>
+								</div>
+							</div>
+							<p th:if="${comments.isEmpty()}" th:text="#{label.comments.empty}"></p>
+							<div class="media-grids">
+								<div th:each="comment : ${comments}" class="media">
+									<h5 th:text="${comment.author.getFullName()}"></h5>
+									<div class="media-left">
+										<a href="#">
+											<img src="../images/user.jpg" th:title="${comment.author.email}" alt=" " />
+										</a>
+									</div>
+									<div class="media-body" th:utext="${comment.comment}">
+
+									</div>
+									<div class="media-bottom">
+										<span th:text="#{label.commentdate} + ' ' + ${ #temporals.format(comment.getPostDate(), 'dd-MM-yyyy HH:mm')}"></span>
+									</div>
+									<div sec:authorize="isAuthenticated()">
+										<div class="my-1" th:if="${user.getId().equals(comment.getAuthor().getId())} or ${#authorization.expression('hasRole(''ROLE_MODERATOR'')')} or ${#authorization.expression('hasRole(''ROLE_ADMIN'')')}">
+											<a th:href="@{/editComment/{comment_id} (comment_id = ${comment.getId()})}" th:text="#{label.edit}" class="mr-3"></a>
+											<form th:action="@{/deleteComment}" method="post">
+												<input type="hidden" name="comment_id" th:value="${comment.getId()}">
+												<input type="submit" class="btn btn-link text-decoration-none" style="color: red" th:value="#{label.delete}" >
+											</form>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<div class="clearfix"> </div>
+				</div>
+				<!-- //movie-browse-agile -->
+
+			</div>
+		</div>
+	</div>
+
+	<!--<div class="container my-4">-->
+		<!--<h1 th:text="#{label.post}"></h1>-->
+		<!--<div class="jumbotron">-->
+			<!--<h1 th:text="${post.title}" class="display-4"></h1>-->
+			<!--<h5 th:text="${'by ' + post.author.fullName}"></h5>-->
+			<!--<hr class="my-4">-->
+			<!--<p style="word-wrap:break-word" class="lead" th:text="${post.content}"></p>-->
+			<!--<div sec:authorize="isAuthenticated()">-->
+				<!--<div th:if="${user.getId().equals(post.getAuthor().getId())} or ${#authorization.expression('hasRole(''ROLE_MODERATOR'')')} or ${#authorization.expression('hasRole(''ROLE_ADMIN'')')}" class="btn-group">-->
+					<!--<a th:href="@{/editPost/{post_id}(post_id = ${post.getId()})}"><button class="btn btn-primary mr-1" th:text="#{label.edit}"></button></a>-->
+					<!--<form th:action="@{/deletePost}" method="post">-->
+						<!--<input type="hidden" name="id" th:value="${post.getId()}">-->
+						<!--<input type="submit" class="btn btn-danger " th:value="#{label.delete}">-->
+					<!--</form>-->
+				<!--</div>-->
+			<!--</div>-->
+			<!--<span th:text="#{label.publishdate}"></span><p th:text="${' ' + post.postDate.toString().replace('T', ' at ').substring(0, post.postDate.toString().indexOf('.')+3)}"></p>-->
+		<!--</div>-->
+
+
+		<!--<div sec:authorize="isAuthenticated()">-->
+			<!--<h2 th:text="#{label.addcomment}"></h2>-->
+			<!--<div class="mt-1">-->
+				<!--<form th:action="@{/addComment}" method="post">-->
+					<!--<input type="hidden" name="add_comment_post_id" th:value="${post.getId()}">-->
+					<!--<div class="form-group">-->
+						<!--<textarea name="comment" class="form-control" rows="3" id="inputContent" maxlength="255" th:placeholder="#{label.placeholder.comment}" required></textarea>-->
+					<!--</div>-->
+					<!--<div class="d-flex flex-row-reverse"><button type="submit" class="btn btn-primary" th:text="#{label.comment}"></button></div>-->
+				<!--</form>-->
+			<!--</div>-->
+		<!--</div>-->
+
+		<!--<h2 th:text="#{label.comments}"></h2>-->
+		<!--<div id="commentSection" class="mt-1 mb-5">-->
+			<!--<div th:each="comment : ${comments}" class="container-fluid mt-3 mb-1" style="border: 1px solid;">-->
+				<!--<img src="../static/images/person.png" width="32" height="32" alt=""><h4 th:text="${comment.getAuthor().getFullName()}"></h4>-->
+				<!--<img src="../static/images/comment.png" width="16" height="16" alt=""><h6 class="ml-4" th:text="${comment.getComment()}"></h6>-->
+				<!--<div><img src="../static/images/calendar.png" width="16" height="16" alt=""><span th:text="#{label.commentdate} + ' ' + ${ #temporals.format(comment.getPostDate(), 'dd-MM-yyyy HH:mm')}"></span></div>-->
+				<!--<div sec:authorize="isAuthenticated()">-->
+					<!--<div th:if="${user.getId().equals(comment.getAuthor().getId())} or ${#authorization.expression('hasRole(''ROLE_MODERATOR'')')} or ${#authorization.expression('hasRole(''ROLE_ADMIN'')')}" class="btn-group">-->
+						<!--<a th:href="@{/editComment/{comment_id} (comment_id = ${comment.getId()})}" th:text="#{label.edit}"></a>-->
+						<!--<form th:action="@{/deleteComment}" method="post">-->
+							<!--<input type="hidden" name="comment_id" th:value="${comment.getId()}">-->
+							<!--<input type="submit" class="btn btn-link text-decoration-none" style="color: red;" th:value="#{label.delete}">-->
+						<!--</form>-->
+					<!--</div>-->
+				<!--</div>-->
+
+			<!--</div>-->
+		<!--</div>-->
+	<!--</div>-->
+
+</div>
+</html>

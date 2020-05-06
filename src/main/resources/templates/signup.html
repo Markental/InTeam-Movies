@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      layout:decorator="layouts/_movies.html">
+
+<div layout:fragment="content">
+
+    <div class="container my-4">
+        <h1 th:text="#{label.registration}"></h1>
+        <form th:action="@{/signUp}" method="post">
+
+            <div class="form-group">
+                <label for="Email" th:text="#{label.email}"></label>
+                <input type="email" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" class="form-control" id="Email" th:placeholder="#{label.placeholder.email}" name="email" required>
+            </div>
+            <div class="form-group">
+                <label for="password" th:text="#{label.password}"></label>
+                <input type="password" class="form-control" id="password" th:placeholder="#{label.placeholder.password}" name="password" minlength="6" maxlength="60" required>
+            </div>
+            <div class="form-group">
+                <label for="repassword" th:text="#{label.confirmpassword}"></label>
+                <input type="password" class="form-control" id="repassword" th:placeholder="#{label.placeholder.confirmpassword}" name="repassword" minlength="6" maxlength="60" required>
+            </div>
+            <div class="form-group">
+                <label for="surname" th:text="#{label.surname}"></label>
+                <input type="text" class="form-control" id="surname" th:placeholder="#{label.placeholder.surname}" name="surname" required>
+            </div>
+            <div class="form-group">
+                <label for="name" th:text="#{label.name}"></label>
+                <input type="text" class="form-control" id="name" th:placeholder="#{label.placeholder.name}" name="name" required>
+            </div>
+            <div class="form-group">
+                <a th:href="@{/login}" th:text="#{label.signin}">Login</a>
+            </div>
+            <button type="submit" class="btn btn-primary" th:text="#{label.register}"></button>
+        </form>
+    </div>
+</div>
+
+</html>

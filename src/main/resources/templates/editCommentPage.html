@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      layout:decorator="layouts/_movies.html">
+
+<div layout:fragment="content">
+
+    <!-- nav -->
+    <div class="movies_nav">
+        <div class="container">
+            <nav class="navbar navbar-default">
+                <div class="navbar-header navbar-left">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                </div>
+                <!-- Collect the nav links, forms, and other content for toggling -->
+                <div class="collapse navbar-collapse navbar-right" id="bs-example-navbar-collapse-1">
+                    <nav>
+                        <ul class="nav navbar-nav">
+                            <li><a th:href="@{'/'}">Home</a></li>
+                            <li class="dropdown">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Genres <b class="caret"></b></a>
+                                <ul class="dropdown-menu multi-column columns-3">
+                                    <li>
+                                        <div class="col-sm-4">
+                                            <ul class="multi-column-dropdown">
+                                                <li th:each="genre : ${genres}"><a href="#" th:text="${genre.name}"></a></li>
+                                            </ul>
+                                        </div>
+                                        <div class="clearfix"></div>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li sec:authorize="hasAnyRole('ROLE_ADMIN')"><a th:href="@{'/addPost'}" >Add Movie</a></li>
+                            <li sec:authorize="hasAnyRole('ROLE_ADMIN')"><a th:href="@{'/adminPage'}">Admin Page</a></li>
+                            <li sec:authorize="hasAnyRole('ROLE_MODERATOR')"><a th:href="@{'/moderatorPage'}">Moderator Page</a></li>
+                        </ul>
+                    </nav>
+                </div>
+            </nav>
+        </div>
+    </div>
+    <!-- //nav -->
+
+    <div class="container my-4">
+        <h1 th:text="#{label.editcomment}"></h1>
+        <form th:action="@{/editComment/{comment_id} (comment_id = ${comment.getId()})}" method="post">
+            <div class="form-group">
+                <input type="hidden" name="id" value="${comment.id}">
+                <label for="inputContent" th:text="#{label.commentcontent}"></label>
+                <textarea name="comment" class="form-control" rows="3" id="inputContent" maxlength="255" autofocus required th:placeholder="#{label.placeholder.comment}" th:text="${comment.comment}"></textarea>
+                <script>
+                    CKEDITOR.replace('inputContent');
+                </script>
+                <button type="submit" class="btn btn-primary" th:text="#{label.edit}"></button>
+            </div>
+
+        </form>
+    </div>
+
+</div>
+
+
+
+</html>

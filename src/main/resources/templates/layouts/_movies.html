@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <title>InTeam Movies</title>
+    <!-- for-mobile-apps -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="keywords" content="One Movies Responsive web template, Bootstrap Web Templates, Flat Web Templates, Android Compatible web template,
+Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, SonyEricsson, Motorola web design" />
+    <script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false);
+    function hideURLbar(){ window.scrollTo(0,1); } </script>
+    <!-- //for-mobile-apps -->
+    <link href="../css/bootstrap.css" rel="stylesheet" type="text/css" media="all" />
+    <link href="../css/style.css" rel="stylesheet" type="text/css" media="all" />
+    <link rel="stylesheet" href="../css/contactstyle.css" type="text/css" media="all" />
+    <link rel="stylesheet" href="../css/faqstyle.css" type="text/css" media="all" />
+    <link href="../css/single.css" rel='stylesheet' type='text/css' />
+    <link href="../css/medile.css" rel='stylesheet' type='text/css' />
+    <!-- banner-slider -->
+    <link href="../css/jquery.slidey.min.css" rel="stylesheet">
+    <!-- //banner-slider -->
+    <!-- pop-up -->
+    <link href="../css/popuo-box.css" rel="stylesheet" type="text/css" media="all" />
+    <!-- //pop-up -->
+    <!-- font-awesome icons -->
+    <link rel="stylesheet" href="../css/font-awesome.min.css" />
+    <!-- //font-awesome icons -->
+    <!-- js -->
+    <script type="text/javascript" src="../js/jquery-2.1.4.min.js"></script>
+    <!-- //js -->
+    <!-- banner-bottom-plugin -->
+    <link href="../css/owl.carousel.css" rel="stylesheet" type="text/css" media="all">
+    <script src="../js/owl.carousel.js"></script>
+    <script>
+        $(document).ready(function() {
+            $("#owl-demo").owlCarousel({
+
+                autoPlay: 3000, //Set AutoPlay to 3 seconds
+
+                items : 5,
+                itemsDesktop : [640,4],
+                itemsDesktopSmall : [414,3]
+
+            });
+
+        });
+    </script>
+    <!-- //banner-bottom-plugin -->
+    <link href='//fonts.googleapis.com/css?family=Roboto+Condensed:400,700italic,700,400italic,300italic,300' rel='stylesheet' type='text/css'>
+    <!-- start-smoth-scrolling -->
+    <script type="text/javascript" src="../js/move-top.js"></script>
+    <script type="text/javascript" src="../js/easing.js"></script>
+    <script type="text/javascript">
+        jQuery(document).ready(function($) {
+            $(".scroll").click(function(event){
+                event.preventDefault();
+                $('html,body').animate({scrollTop:$(this.hash).offset().top},1000);
+            });
+        });
+    </script>
+    <!-- start-smoth-scrolling -->
+
+    <!-- CKEditor -->
+    <script src="../ckeditor/ckeditor.js"></script>
+    <!-- //CKEditor -->
+</head>
+
+<body>
+<!-- header -->
+<div class="header">
+    <div class="container">
+        <div class="w3layouts_logo">
+            <a th:href="@{'/'}"><h1>InTeam<span>Movies</span></h1></a>
+        </div>
+        <div class="w3_search">
+            <form th:action="@{'/search'}" method="get">
+                <input type="text" name="query" th:placeholder="#{label.placeholder.search}" required>
+                <input type="submit" th:value="#{label.searchBtn}">
+            </form>
+        </div>
+        <div class="w3l_sign_in_register">
+            <a th:href="@{'?lng=en'}">ENG</a>
+            <a th:href="@{'?lng=ru'}">РУС</a>
+            <ul>
+                <li sec:authorize="isAuthenticated()"><a href="JavaScript:void(0)" onclick="logout()" th:text="#{label.logout}"></a></li>
+                <li sec:authorize="isAnonymous()"><a href="#login" data-toggle="modal" data-target="#form" th:text="#{label.login}"></a></li>
+                <li sec:authorize="isAuthenticated()"><a th:href="@{'/profile'}">Profile</a></li>
+            </ul>
+        </div>
+        <form th:action = "@{'/logout'}" id = "logoutForm">
+        </form>
+        <script type="text/javascript">
+            function logout(){
+                document.getElementById("logoutForm").submit();
+            }
+        </script>
+        <div class="clearfix"> </div>
+    </div>
+</div>
+<!-- //header -->
+<!-- bootstrap-pop-up -->
+<div class="modal video-modal fade" id="form" tabindex="-1" role="dialog" aria-labelledby="form">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                Sign In & Sign Up
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            </div>
+            <section>
+                <div class="modal-body">
+                    <div class="w3_login_module">
+                        <div class="module form-module">
+                            <div class="toggle"><i class="fa fa-times fa-pencil"></i>
+                                <div class="tooltip" th:text="#{label.clickme}"></div>
+                            </div>
+                            <div class="form">
+                                <h3>Login to your account</h3>
+                                <form th:action="@{/auth}" method="post">
+                                    <input type="email" name="email" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" th:placeholder="#{label.email}" required>
+                                    <input type="password" name="password" minlength="6" maxlength="60" th:placeholder="#{label.password}" required>
+                                    <input type="submit" th:value="#{label.login}">
+                                </form>
+                            </div>
+                            <div class="form">
+                                <h3>Create an account</h3>
+                                <form th:action="@{/signUp}" method="post">
+                                    <input type="email" name="email" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" th:placeholder="#{label.email}" required>
+                                    <input type="password" id="regPassword" name="password" th:placeholder="#{label.password}" required>
+                                    <input type="password"  id="repassword" th:placeholder="#{label.confirmpassword}" name="repassword" minlength="6" maxlength="60" required>
+                                    <input type="text" th:placeholder="#{label.surname}" name="surname" required>
+                                    <input type="text" th:placeholder="#{label.name}" name="name" required>
+                                    <input type="submit" th:value="#{label.register}">
+                                </form>
+                            </div>
+                            <!--<div class="cta"><a href="#">Forgot your password?</a></div>-->
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+</div>
+<script>
+    $('.toggle').click(function(){
+        // Switches the Icon
+        $(this).children('i').toggleClass('fa-pencil');
+        // Switches the forms
+        $('.form').animate({
+            height: "toggle",
+            'padding-top': 'toggle',
+            'padding-bottom': 'toggle',
+            opacity: "toggle"
+        }, "slow");
+    });
+</script>
+<!-- //bootstrap-pop-up -->
+
+<div class="general_social_icons">
+    <nav class="social">
+        <ul>
+            <li class="w3_vk"><a href="https://vk.com/markental">markental <i class="fa fa-vk"></i></a></li>
+            <li class="w3_vk"><a href="https://vk.com/akimbekdarkhan">plovalova <i class="fa fa-vk"></i></a></li>
+        </ul>
+    </nav>
+</div>
+
+<!-- general -->
+<div class="general">
+    <div layout:fragment = "content" style="min-height: 800px;">
+
+    </div>
+    <div class="clearfix"></div>
+</div>
+<!-- //general -->
+
+
+<!-- footer -->
+<div class="footer">
+    <div class="container">
+        <div class="w3ls_footer_grid">
+            <div class="col-md-6 w3ls_footer_grid_left">
+                <!--  ayaya -->
+            </div>
+            <div class="col-md-6 w3ls_footer_grid_right">
+                <a href="index.html"><h2>InTeam<span>Movies</span></h2></a>
+            </div>
+            <div class="clearfix"> </div>
+        </div>
+        <div class="col-md-5 w3ls_footer_grid1_left">
+            <p>&copy; <span th:text="#{label.copyright}">2020 InTeam Movies. All rights reserved</span></p>
+        </div>
+        <div class="col-md-7 w3ls_footer_grid1_right">
+            <ul>
+                <li>
+                    <a href="faq.html">FAQ</a>
+                </li>
+                <li>
+                    <a href="contact.html">Contact Us</a>
+                </li>
+            </ul>
+        </div>
+        <div class="clearfix"> </div>
+    </div>
+</div>
+<!-- //footer -->
+<!-- Bootstrap Core JavaScript -->
+<script src="../js/bootstrap.min.js"></script>
+<script>
+    $(document).ready(function(){
+        $(".dropdown").hover(
+            function() {
+                $('.dropdown-menu', this).stop( true, true ).slideDown("fast");
+                $(this).toggleClass('open');
+            },
+            function() {
+                $('.dropdown-menu', this).stop( true, true ).slideUp("fast");
+                $(this).toggleClass('open');
+            }
+        );
+    });
+</script>
+<!-- //Bootstrap Core JavaScript -->
+<!-- here stars scrolling icon -->
+<script type="text/javascript">
+    $(document).ready(function() {
+        /*
+            var defaults = {
+            containerID: 'toTop', // fading element id
+            containerHoverID: 'toTopHover', // fading element hover id
+            scrollSpeed: 1200,
+            easingType: 'linear'
+            };
+        */
+
+        $().UItoTop({ easingType: 'easeOutQuart' });
+
+    });
+</script>
+<!-- //here ends scrolling icon -->
+</body>
+</html>
