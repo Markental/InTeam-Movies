@@ -49,7 +49,7 @@
     <!-- //nav -->
 
     <div class="container mt-4 mb-4">
-        <h4 class="latest-text w3_latest_text" th:text="#{label.posts}"></h4>
+        <h4 class="latest-text w3_latest_text" th:text="${selected.name}"></h4>
         <div class="general">
             <div class="container">
                 <div th:each="post : ${posts}" class="col-md-2 w3l-movie-gride-agile">

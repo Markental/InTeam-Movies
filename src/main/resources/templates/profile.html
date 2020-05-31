@@ -85,7 +85,7 @@
                 <form th:action="@{/changeFullName}" method="post">
                     <div class="form-group">
                         <label for="inputNewSurname" th:text="#{label.newsurname}"></label>
-                        <input type="text" name="newSurname" class="form-control" id="inputNewSurname" th:placeholder="#{label.placeholder.newname}" th:value="${user.getSurname()}" required>
+                        <input type="text" name="newSurname" class="form-control" id="inputNewSurname" th:placeholder="#{label.placeholder.newsurname}" th:value="${user.getSurname()}" required>
                     </div>
                     <div class="form-group">
                         <label for="inputNewName" th:text="#{label.newname}"></label>

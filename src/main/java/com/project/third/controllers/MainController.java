@@ -168,6 +168,7 @@ public class MainController {
     public String genre(Model model,
                         @PathVariable(name="name")String name) {
         Genre selected = genresRepositories.findByName(name);
+        model.addAttribute("selected", selected);
 
         List<Post> posts = postsRepository.findAllByGenresContains(selected);
         model.addAttribute("posts", posts);
