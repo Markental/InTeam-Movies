@@ -23,23 +23,23 @@
                 <div class="collapse navbar-collapse navbar-right" id="bs-example-navbar-collapse-1">
                     <nav>
                         <ul class="nav navbar-nav">
-                            <li><a th:href="@{'/'}">Home</a></li>
+                            <li><a th:href="@{'/'}" th:text="#{label.main}"></a></li>
                             <li class="dropdown">
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Genres <b class="caret"></b></a>
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" th:text="#{label.genres}"> <b class="caret"></b></a>
                                 <ul class="dropdown-menu multi-column columns-3">
                                     <li>
                                         <div class="col-sm-4">
                                             <ul class="multi-column-dropdown">
-                                                <li th:each="genre : ${genres}"><a href="#" th:text="${genre.name}"></a></li>
+                                                <li th:each="genre : ${genres}"><a th:href="@{/genre/{name} (name=${genre.name})}" th:text="${genre.name}"></a></li>
                                             </ul>
                                         </div>
                                         <div class="clearfix"></div>
                                     </li>
                                 </ul>
                             </li>
-                            <li sec:authorize="hasAnyRole('ROLE_ADMIN')"><a th:href="@{'/addPost'}" >Add Movie</a></li>
-                            <li sec:authorize="hasAnyRole('ROLE_ADMIN')"><a th:href="@{'/adminPage'}">Admin Page</a></li>
-                            <li sec:authorize="hasAnyRole('ROLE_MODERATOR')"><a th:href="@{'/moderatorPage'}">Moderator Page</a></li>
+                            <li sec:authorize="hasAnyRole('ROLE_ADMIN')"><a th:href="@{'/addPost'}" th:text="#{label.addpost}"></a></li>
+                            <li sec:authorize="hasAnyRole('ROLE_ADMIN')"><a th:href="@{'/adminPage'}" th:text="#{label.adminpage}"></a></li>
+                            <li sec:authorize="hasAnyRole('ROLE_MODERATOR')"><a th:href="@{'/moderatorPage'}" th:text="#{label.moderatorpage}"></a></li>
                         </ul>
                     </nav>
                 </div>
@@ -49,56 +49,62 @@
     <!-- //nav -->
 
     <div class="container my-4">
-        <div sec:authorize="hasRole('ROLE_ADMIN')">
-            <a th:href="@{/adminPage}" th:text="#{label.adminpage}"> ADMIN PAGE</a>
-        </div>
+        <!--<div sec:authorize="hasRole('ROLE_ADMIN')">-->
+            <!--<a th:href="@{/adminPage}" th:text="#{label.adminpage}"> ADMIN PAGE</a>-->
+        <!--</div>-->
 
-        <div sec:authorize="hasRole('ROLE_MODERATOR')">
-            <a th:href="@{/moderatorPage}" th:text="#{label.moderatorpage}">MODERATOR PAGE</a>
-        </div>
+        <!--<div sec:authorize="hasRole('ROLE_MODERATOR')">-->
+            <!--<a th:href="@{/moderatorPage}" th:text="#{label.moderatorpage}">MODERATOR PAGE</a>-->
+        <!--</div>-->
 
-        <div>
-            <h1 th:text="#{label.pageof} + ' ' + ${user.getFullName()}"></h1>
-            <h3 th:text="#{label.email} + ' - ' + ${user.getEmail()}"></h3>
+        <div class="container">
+            <h1 class="my-2" th:text="#{label.pageof} + ' ' + ${user.getFullName()}"></h1>
+            <h3 class="my-2" th:text="#{label.email} + ' - ' + ${user.getEmail()}"></h3>
 
-            <h4 th:next="#{label.changepassword}"></h4>
-            <form th:action="@{/changePassword}" method="post">
-                <div class="form-group">
-                    <label for="inputOld" th:text="#{label.oldpassword}"></label>
-                    <input type="password" name="oldPassword" class="form-control" id="inputOld" minlength="6" maxlength="60" th:placeholder="#{label.placeholder.oldpassword}" required>
-                </div>
-                <div class="form-group">
-                    <label for="inputNewPassword" th:text="#{label.newpassword}"></label>
-                    <input type="password" name="newPassword" class="form-control" id="inputNewPassword" minlength="6" maxlength="60" th:placeholder="#{label.placeholder.newpassword}" required>
-                </div>
-                <div class="form-group">
-                    <label for="inputRePassword" th:text="#{label.confirmpassword}"></label>
-                    <input type="password" name="repeatNewPassword" class="form-control" id="inputRePassword" minlength="6" maxlength="60" th:placeholder="#{label.placeholder.confirmpassword}" required>
-                </div>
-                <button type="submit" class="btn btn-primary" th:text="#{label.changepassword}"></button>
-            </form>
+            <h4 class="my-2" th:next="#{label.changepassword}"></h4>
+            <div class="my-2">
+                <form th:action="@{/changePassword}" method="post">
+                    <div class="form-group">
+                        <label for="inputOld" th:text="#{label.oldpassword}"></label>
+                        <input type="password" name="oldPassword" class="form-control" id="inputOld" minlength="6" maxlength="60" th:placeholder="#{label.placeholder.oldpassword}" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="inputNewPassword" th:text="#{label.newpassword}"></label>
+                        <input type="password" name="newPassword" class="form-control" id="inputNewPassword" minlength="6" maxlength="60" th:placeholder="#{label.placeholder.newpassword}" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="inputRePassword" th:text="#{label.confirmpassword}"></label>
+                        <input type="password" name="repeatNewPassword" class="form-control" id="inputRePassword" minlength="6" maxlength="60" th:placeholder="#{label.placeholder.confirmpassword}" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary" th:text="#{label.changepassword}"></button>
+                </form>
+            </div>
 
-            <h4 th:text="#{label.changename}"></h4>
-            <form th:action="@{/changeFullName}" method="post">
-                <div class="form-group">
-                    <label for="inputNewSurname" th:text="#{label.newsurname}"></label>
-                    <input type="text" name="newSurname" class="form-control" id="inputNewSurname" th:placeholder="#{label.placeholder.newname}" th:value="${user.getSurname()}" required>
-                </div>
-                <div class="form-group">
-                    <label for="inputNewName" th:text="#{label.newname}"></label>
-                    <input type="text" name="newName" class="form-control" id="inputNewName" th:placeholder="#{label.placeholder.newname}" th:value="${user.getName()}" required>
-                </div>
-                <button type="submit" class="btn btn-primary" th:text="#{label.changename}"></button>
-            </form>
+            <h4 class="my-2" th:text="#{label.changename}"></h4>
+            <div>
+                <form th:action="@{/changeFullName}" method="post">
+                    <div class="form-group">
+                        <label for="inputNewSurname" th:text="#{label.newsurname}"></label>
+                        <input type="text" name="newSurname" class="form-control" id="inputNewSurname" th:placeholder="#{label.placeholder.newname}" th:value="${user.getSurname()}" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="inputNewName" th:text="#{label.newname}"></label>
+                        <input type="text" name="newName" class="form-control" id="inputNewName" th:placeholder="#{label.placeholder.newname}" th:value="${user.getName()}" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary" th:text="#{label.changename}"></button>
+                </form>
+            </div>
 
-            <h4 th:text="#{label.chageemail}"></h4>
-            <form th:action="@{/changeEmail}" method="post">
-                <div class="form-group">
-                    <label for="inputNewEmail" th:text="#{label.email}"></label>
-                    <input type="email" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" name="newEmail" class="form-control" id="inputNewEmail" th:placeholder="${user.getEmail()}" required>
-                </div>
-                <button type="submit" class="btn btn-primary" th:text="#{label.chageemail}"></button>
-            </form>
+            <h4 class="my-2" th:text="#{label.chageemail}"></h4>
+            <div>
+                <form th:action="@{/changeEmail}" method="post">
+                    <div class="form-group">
+                        <label for="inputNewEmail" th:text="#{label.email}"></label>
+                        <input type="email" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" name="newEmail" class="form-control" id="inputNewEmail" th:placeholder="${user.getEmail()}" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary" th:text="#{label.chageemail}"></button>
+                </form>
+            </div>
         </div>
     </div>
 </div>

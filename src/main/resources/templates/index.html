@@ -23,23 +23,23 @@
                 <div class="collapse navbar-collapse navbar-right" id="bs-example-navbar-collapse-1">
                     <nav>
                         <ul class="nav navbar-nav">
-                            <li class="active"><a th:href="@{'/'}">Home</a></li>
+                            <li class="active"><a th:href="@{'/'}" th:text="#{label.main}"></a></li>
                             <li class="dropdown">
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Genres <b class="caret"></b></a>
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" th:text="#{label.genres}"> <b class="caret"></b></a>
                                 <ul class="dropdown-menu multi-column columns-3">
                                     <li>
                                         <div class="col-sm-4">
                                             <ul class="multi-column-dropdown">
-                                                <li th:each="genre : ${genres}"><a href="#" th:text="${genre.name}"></a></li>
+                                                <li th:each="genre : ${genres}"><a th:href="@{/genre/{name} (name=${genre.name})}" th:text="${genre.name}"></a></li>
                                             </ul>
                                         </div>
                                         <div class="clearfix"></div>
                                     </li>
                                 </ul>
                             </li>
-                            <li sec:authorize="hasAnyRole('ROLE_ADMIN')"><a th:href="@{'/addPost'}" >Add Movie</a></li>
-                            <li sec:authorize="hasAnyRole('ROLE_ADMIN')"><a th:href="@{'/adminPage'}">Admin Page</a></li>
-                            <li sec:authorize="hasAnyRole('ROLE_MODERATOR')"><a th:href="@{'/moderatorPage'}">Moderator Page</a></li>
+                            <li sec:authorize="hasAnyRole('ROLE_ADMIN')"><a th:href="@{'/addPost'}" th:text="#{label.addpost}"></a></li>
+                            <li sec:authorize="hasAnyRole('ROLE_ADMIN')"><a th:href="@{'/adminPage'}" th:text="#{label.adminpage}"></a></li>
+                            <li sec:authorize="hasAnyRole('ROLE_MODERATOR')"><a th:href="@{'/moderatorPage'}" th:text="#{label.moderatorpage}"></a></li>
                         </ul>
                     </nav>
                 </div>
@@ -48,10 +48,29 @@
     </div>
     <!-- //nav -->
 
-    <div class="container mt-4 mb-4">
+    <!-- banner -->
+    <div id="slidey" style="display:none;">
+        <ul>
+            <li th:each="item: ${latestFive}"><img th:src="${item.posterURL}" alt=""><p class='title' th:text="${item.title}"></p><p class='description' th:text="${item.shortContent}"></p></a></li>
+        </ul>
+    </div>
+    <script src="../js/jquery.slidey.js"></script>
+    <script src="../js/jquery.dotdotdot.min.js"></script>
+    <script type="text/javascript">
+        $("#slidey").slidey({
+            interval: 8000,
+            listCount: 5,
+            autoplay: false,
+            showList: true
 
+        });
+        $(".slidey-list-description").dotdotdot();
+    </script>
+    <!-- //banner -->
+
+    <div class="container mt-4 mb-4">
+        <h4 class="latest-text w3_latest_text" th:text="#{label.posts}"></h4>
         <div class="general">
-            <h4 class="latest-text w3_latest_text" th:text="#{label.posts}"></h4>
             <div class="container">
                 <div th:each="post : ${posts}" class="col-md-2 w3l-movie-gride-agile">
                     <a th:href="@{/post/{id} (id = ${post.getId()})}" class="hvr-shutter-out-horizontal">

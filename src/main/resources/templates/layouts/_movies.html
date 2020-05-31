@@ -77,17 +77,19 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
         </div>
         <div class="w3_search">
             <form th:action="@{'/search'}" method="get">
-                <input type="text" name="query" th:placeholder="#{label.placeholder.search}" required>
+                <input type="text" name="query" th:placeholder="#{label.placeholder.search}">
                 <input type="submit" th:value="#{label.searchBtn}">
             </form>
         </div>
         <div class="w3l_sign_in_register">
-            <a th:href="@{'?lng=en'}">ENG</a>
-            <a th:href="@{'?lng=ru'}">РУС</a>
+            <ul style="float: left;">
+                <li><div><a th:href="@{'?lng=en'}">ENG</a></div></li>
+                <li><div><a th:href="@{'?lng=ru'}">РУС</a></div></li>
+            </ul>
             <ul>
                 <li sec:authorize="isAuthenticated()"><a href="JavaScript:void(0)" onclick="logout()" th:text="#{label.logout}"></a></li>
                 <li sec:authorize="isAnonymous()"><a href="#login" data-toggle="modal" data-target="#form" th:text="#{label.login}"></a></li>
-                <li sec:authorize="isAuthenticated()"><a th:href="@{'/profile'}">Profile</a></li>
+                <li sec:authorize="isAuthenticated()"><a th:href="@{'/profile'}" th:text="#{label.profile}"></a></li>
             </ul>
         </div>
         <form th:action = "@{'/logout'}" id = "logoutForm">

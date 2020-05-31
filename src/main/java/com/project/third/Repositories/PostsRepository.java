@@ -17,4 +17,6 @@ public interface PostsRepository extends JpaRepository<Post, Long> {
 //    List<Post> findPostsByTitleContains(String query);
 
     List<Post> findAllByGenresContains(Genre genre);
+
+    List<Post>findFirst5ByOrderByPostDateDesc();
 }

@@ -67,7 +67,7 @@ input[type="submit"],.agileinfo_chat a,.w3ls_footer_grid1_left p a,.w3l_sign_in_
 .w3_search{
 	float: left;
     width: 40%;
-    margin-left: 9em;
+    /*margin-left: 9em;*/
 	margin-top: .7em;
 }
 .w3_search input[type="text"]{
@@ -100,7 +100,7 @@ input[type="submit"],.agileinfo_chat a,.w3ls_footer_grid1_left p a,.w3l_sign_in_
 .w3l_sign_in_register{
 	float: right;
     margin-top:1em;
-    width: 25%;
+    width: 21em;
 }
 .w3l_sign_in_register ul li a{
 	color: #fff;
@@ -112,6 +112,25 @@ input[type="submit"],.agileinfo_chat a,.w3ls_footer_grid1_left p a,.w3l_sign_in_
     padding: 6px 30px;
     font-weight: bold;
 }
+.w3l_sign_in_register ul li div a{
+    float:right; !important;
+    display:inline-block; !important;
+    text-transform: uppercase;
+    background: none;
+    text-align: left;
+    padding: 4px 4px;
+    font-weight: bold;
+    color:#212121; !important;
+    font-size:1em; !important;
+}
+.w3l_sign_in_register ul li div a:focus{
+    outline:none;
+}
+.w3l_sign_in_register ul li div a:hover{
+    color: gray;
+    background: none;
+}
+
 .w3l_sign_in_register ul li a:focus{
 	outline:none;
 }
@@ -1036,7 +1055,7 @@ h3.head {
 		width: 30%;
 	}
 	.w3_search {
-		margin-left: 4em;
+		/*margin-left: 4em;*/
 	}
 	.w3l-movie-gride-agile1 {
 		width: 100% !important;
@@ -1087,7 +1106,7 @@ h3.head {
 		font-size: 14px;
 	}
 	.w3_search {
-		margin-left: 1.5em;
+		/*margin-left: 1.5em;*/
 	}
 	.navbar-nav > li {
 		font-size: 12px;
@@ -1403,7 +1422,7 @@ h3.head {
 	.w3_search {
 		width: 100%;
 		float: none;
-		margin: 1em 0;
+		/*margin: 1em 0;*/
 	}
 	.w3l_sign_in_register {
 		margin: 0;

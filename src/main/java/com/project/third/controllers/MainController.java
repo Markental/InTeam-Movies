@@ -61,12 +61,12 @@ public class MainController {
         int size = (int) postsRepository.count();
         int tabSize = (size+11)/12;
 
-        if(page<1){
+        if(page<1) {
             page = 1;
         }
 
         Pageable pageable = PageRequest.of(page-1,12);
-        List<Post> posts = postsRepository.findAll(pageable).toList();
+        ArrayList<Post> posts = new ArrayList<>(postsRepository.findAll(pageable).toList());
 
         model.addAttribute("posts", posts);
         model.addAttribute("tabSize", tabSize);
@@ -75,18 +75,32 @@ public class MainController {
         List<Genre> genres = genresRepositories.findAll();
         model.addAttribute("genres", genres);
 
+
+        Collections.shuffle(posts);
+//      List<Post> randomFive = postsRepository.findFirst5ByOrderByPostDateDesc();
+        ArrayList<Post> randomFive = new ArrayList<>();
+        if(posts.size()<5) {
+            randomFive.addAll(posts);
+        }
+        else {
+            for(int i = 0; i < 5; i++) {
+                randomFive.add(posts.get(i));
+            }
+        }
+
+        model.addAttribute("latestFive", randomFive);
         return "index";
     }
 
     @GetMapping(path = "/search")
     public String list(Model model,
-                       @RequestParam(name="query")String query) {
+                       @RequestParam(name="query")String query,
+                       @RequestParam(name="query", required = false)String[] genres_names) {
         List<Post> allPosts = postsRepository.findAll();
         List<Post> found = new ArrayList<>();
 
         for (Post post:allPosts) {
-            if (post.getTitle().toLowerCase().contains(query.toLowerCase()))
-            {
+            if (post.getTitle().toLowerCase().contains(query.toLowerCase())) {
                 found.add(post);
             }
         }
@@ -94,7 +108,10 @@ public class MainController {
 
         List<Genre> genres = genresRepositories.findAll();
         model.addAttribute("genres", genres);
-        return "search"; // create search.html!!
+
+        model.addAttribute("query", query);
+
+        return "search";
     }
 
     @PostMapping(path = "/signUp")
@@ -106,7 +123,7 @@ public class MainController {
                          @RequestParam(name="name")String name){
 
         Roles role = new Roles(1L, "ROLE_USER", "User");
-        HashSet<Roles> roles = new HashSet<Roles>();
+        HashSet<Roles> roles = new HashSet<>();
         roles.add(role);
         Users user = new Users(null, email, passwordEncoder.encode(password), name, surname, true, roles);
         usersRepository.save(user);
